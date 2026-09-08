@@ -6,6 +6,14 @@ MacTap lives in the menu bar and turns taps on the chassis — or the desk under
 
 Requires a MacBook with the built-in motion sensor (Apple Silicon). macOS 14.6 or later.
 
+## Install
+
+1. Download **[MacTap-2.1.0.dmg](https://github.com/jaskirat1616/mactap-app/releases/latest/download/MacTap-2.1.0.dmg)** from [Releases](https://github.com/jaskirat1616/mactap-app/releases).
+2. Open the disk image and drag **MacTap** into Applications.
+3. Open MacTap, then turn on **Accessibility** when asked so knocks can send shortcuts.
+
+Detection itself does not need Accessibility. Actions do. If macOS asks to control System Events, allow that too.
+
 ## Use
 
 - **Anywhere** — one, two, or three knocks on the chassis or desk.

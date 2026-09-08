@@ -1,0 +1,210 @@
+import SwiftUI
+import AppKit
+
+struct DashboardView: View {
+    @ObservedObject var engine: GestureEngine
+    @ObservedObject var permissions: PermissionsManager
+    @ObservedObject private var configStore = ConfigStore.shared
+    @Environment(\.openSettings) private var openSettings
+
+    var body: some View {
+        VStack(spacing: 10) {
+            header
+            hero
+            statusCapsules
+            if !permissions.allGranted {
+                CoastCapsuleButton(title: "Allow Accessibility", icon: "lock.shield", prominent: true, fillOnly: true) {
+                    permissions.requestAccessibility()
+                }
+            }
+            footer
+        }
+        .padding(12)
+        .frame(width: 292)
+    }
+
+    private var header: some View {
+        CoastRow(fillOnly: true) {
+            HStack(spacing: 8) {
+                PulseDot(isOn: engine.isRunning)
+                VStack(alignment: .leading, spacing: 1) {
+                    Text("MacTap")
+                        .font(.headline)
+                    Text(engine.isRunning ? "Listening" : "Paused")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+        } trailing: {
+            Toggle("Detection", isOn: Binding(
+                get: { engine.isRunning },
+                set: { on in
+                    if on { engine.start() } else { engine.stop() }
+                }
+            ))
+            .toggleStyle(.switch)
+            .controlSize(.mini)
+            .labelsHidden()
+            .accessibilityLabel("Detection")
+        }
+    }
+
+    private var hero: some View {
+        VStack(spacing: 10) {
+            ChassisSilhouette(
+                leftHot: glow(.left),
+                rightHot: glow(.right),
+                unified: configStore.config.layout == .knock
+            )
+            .frame(height: 54)
+
+            WaveformView(
+                history: engine.sensor.waveformHistory,
+                color: lastAccent
+            )
+            .frame(height: 36)
+            .opacity(engine.isRunning ? 1 : 0.35)
+
+            HStack {
+                Text(heroCaption)
+                    .font(.caption.weight(.medium))
+                Spacer()
+                Text(sensorCaption)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 12)
+        .coastCard(fillOnly: true)
+    }
+
+    private var statusCapsules: some View {
+        VStack(spacing: 6) {
+            CoastRow(fillOnly: true) {
+                Label("Last tap", systemImage: "hand.tap")
+                    .foregroundStyle(.secondary)
+                    .font(.caption)
+            } trailing: {
+                if let g = engine.lastGesture {
+                    Text(lastActionCaption(g))
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(MacTapTheme.accent(for: g.side))
+                        .lineLimit(1)
+                } else {
+                    Text("Waiting")
+                        .font(.caption)
+                        .foregroundStyle(.tertiary)
+                }
+            }
+
+            CoastRow(fillOnly: true) {
+                Label("Preset", systemImage: "square.grid.2x2")
+                    .foregroundStyle(.secondary)
+                    .font(.caption)
+            } trailing: {
+                Menu {
+                    ForEach(GesturePreset.allCases) { preset in
+                        Button {
+                            configStore.applyPreset(preset)
+                        } label: {
+                            Label(preset.title, systemImage: preset.icon)
+                        }
+                    }
+                } label: {
+                    Text(configStore.currentPreset?.title ?? "Custom")
+                        .font(.caption.weight(.semibold))
+                }
+                .menuStyle(.borderlessButton)
+                .fixedSize()
+            }
+
+            CoastToggleRow(
+                title: "On-screen overlay",
+                icon: "rectangle.inset.filled",
+                isOn: $configStore.config.showHUD,
+                fillOnly: true
+            ) { _ in
+                configStore.save()
+            }
+
+            if configStore.config.stats.todayCount > 0 {
+                CoastRow(fillOnly: true) {
+                    Label("Today", systemImage: "chart.bar")
+                        .foregroundStyle(.secondary)
+                        .font(.caption)
+                } trailing: {
+                    Text("\(configStore.config.stats.todayCount)")
+                        .font(.caption.weight(.semibold).monospacedDigit())
+                }
+            }
+        }
+    }
+
+    private var footer: some View {
+        HStack(spacing: 6) {
+            CoastCapsuleButton(title: "Settings", icon: "gearshape", fillOnly: true) {
+                NSApp.activate(ignoringOtherApps: true)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.12) {
+                    openSettings()
+                    NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+                }
+            }
+            CoastCapsuleButton(title: "Quit", fillOnly: true) {
+                NSApplication.shared.terminate(nil)
+            }
+        }
+    }
+
+    private var lastAccent: Color {
+        engine.lastGesture.map { MacTapTheme.accent(for: $0.side) } ?? .accentColor
+    }
+
+    private func glow(_ side: TapSide) -> Double {
+        guard engine.lastGesture != nil else { return 0.12 }
+        if configStore.config.layout == .knock { return 0.9 }
+        guard engine.lastGesture?.side == side else { return 0.12 }
+        return 1
+    }
+
+    private var heroCaption: String {
+        if let g = engine.lastGesture {
+            if let slot = engine.lastExecutedSlot, slot.actionType != .none {
+                return slot.actionType.displayName
+            }
+            return configStore.config.layout == .knock
+                ? tapWord(g.tapCount)
+                : "\(g.side.displayName) · \(tapWord(g.tapCount))"
+        }
+        return engine.isRunning
+            ? (configStore.config.layout == .knock ? "Knock the chassis or desk" : "Tap a chassis edge")
+            : "Detection is off"
+    }
+
+    private func lastActionCaption(_ g: DetectedGesture) -> String {
+        let layout = configStore.config.layout
+        let pattern = layout == .knock ? tapWord(g.tapCount) : "\(g.side.displayName) · \(tapWord(g.tapCount))"
+        if let slot = engine.lastExecutedSlot, slot.actionType != ActionType.none {
+            return "\(pattern) · \(slot.actionType.displayName)"
+        }
+        return pattern
+    }
+
+    private func tapWord(_ count: Int) -> String {
+        switch count {
+        case 1: return "Single"
+        case 2: return "Double"
+        default: return "Triple"
+        }
+    }
+
+    private var sensorCaption: String {
+        if engine.sensor.source == .spu {
+            if engine.sensor.gyroAvailable {
+                return engine.sensor.isStreaming ? "IMU + gyro" : "Ready"
+            }
+            return engine.sensor.isStreaming ? "Built-in IMU" : "Ready"
+        }
+        return "Arrow keys"
+    }
+}

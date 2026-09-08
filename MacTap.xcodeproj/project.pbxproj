@@ -1,0 +1,392 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		030230659D9705F90C87751B /* LaunchAtLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8379D3B8537030BD1092A8BE /* LaunchAtLogin.swift */; };
+		1B92AFDBD647C8C3A0092AD9 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A8286469C2EB6A35FD909E /* SettingsView.swift */; };
+		25018FB20B14D83BE4BA09F7 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD3FE7B2277487D8510597BD /* OnboardingView.swift */; };
+		4C982B5E5B7BCFEEBBEA27F0 /* HUDOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = F094D60EDCE51E620CDC4FC3 /* HUDOverlay.swift */; };
+		5026A115C1E45222FAE3E7D0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9044918AD7C1E8D89070AB1A /* Assets.xcassets */; };
+		5B817C5063B81B1469CAEAF5 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F9ADC090B14EA0FCBE906A4 /* DashboardView.swift */; };
+		77F322658D7EDD29D51393EC /* GestureEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103E0F07B7AFE424E435D33A /* GestureEngine.swift */; };
+		87F4BBDE2C0BE3A211E0B5C0 /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B38BE17E971D0B81BFA2750 /* SoundManager.swift */; };
+		91D6D967FB4D7836E28284E1 /* SensorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D0398E005689B3C85B4796 /* SensorManager.swift */; };
+		BB397A4A84DDD58DCC70DF04 /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0373540309C71B3EE31682A0 /* IntroView.swift */; };
+		C4304E2E0EC061E17D17E8EB /* GestureConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C6135E9F924F163F26092F /* GestureConfig.swift */; };
+		D2CA50ED7165578FA1267CF6 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = F122E2A8D06A751B1D61BADB /* PrivacyInfo.xcprivacy */; };
+		D6879DECC58EEDE697EA7203 /* MacTapApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F10E50889BC973C1767DBA /* MacTapApp.swift */; };
+		DA2F645E929EEF689D5C16A5 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC7014E9FCB380B067AFB73 /* Theme.swift */; };
+		E1498EC353F0FD41E304B59D /* ActionExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B10CB8FE90ED9BD23E7B996 /* ActionExecutor.swift */; };
+		FC59DC9A4216776D9B8BB55D /* TapDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64854320FE4FD95EBA50A2C1 /* TapDetector.swift */; };
+		FDA24E72ACC3BACD13F3AF26 /* PermissionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBCD77AEFBF814FB0DE855E /* PermissionsManager.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0373540309C71B3EE31682A0 /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroView.swift; sourceTree = "<group>"; };
+		0F9ADC090B14EA0FCBE906A4 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		103E0F07B7AFE424E435D33A /* GestureEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureEngine.swift; sourceTree = "<group>"; };
+		1B10CB8FE90ED9BD23E7B996 /* ActionExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionExecutor.swift; sourceTree = "<group>"; };
+		33A8286469C2EB6A35FD909E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		4BC7014E9FCB380B067AFB73 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		64854320FE4FD95EBA50A2C1 /* TapDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapDetector.swift; sourceTree = "<group>"; };
+		67F10E50889BC973C1767DBA /* MacTapApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacTapApp.swift; sourceTree = "<group>"; };
+		8379D3B8537030BD1092A8BE /* LaunchAtLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLogin.swift; sourceTree = "<group>"; };
+		9044918AD7C1E8D89070AB1A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9B38BE17E971D0B81BFA2750 /* SoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
+		A5D0398E005689B3C85B4796 /* SensorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorManager.swift; sourceTree = "<group>"; };
+		BEBCD77AEFBF814FB0DE855E /* PermissionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsManager.swift; sourceTree = "<group>"; };
+		CD3FE7B2277487D8510597BD /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		D0B071C51D09320D71E457C3 /* MacTap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacTap.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4C6135E9F924F163F26092F /* GestureConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureConfig.swift; sourceTree = "<group>"; };
+		F094D60EDCE51E620CDC4FC3 /* HUDOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDOverlay.swift; sourceTree = "<group>"; };
+		F122E2A8D06A751B1D61BADB /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		186DD1AC4C595FA3C7C7AC0C /* MacTap */ = {
+			isa = PBXGroup;
+			children = (
+				2C30DB0438B4EEA13BD56CC2 /* Resources */,
+				575374D837F825FEAF386F28 /* Sources */,
+			);
+			path = MacTap;
+			sourceTree = "<group>";
+		};
+		2C30DB0438B4EEA13BD56CC2 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				9044918AD7C1E8D89070AB1A /* Assets.xcassets */,
+				F122E2A8D06A751B1D61BADB /* PrivacyInfo.xcprivacy */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		575374D837F825FEAF386F28 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				1B10CB8FE90ED9BD23E7B996 /* ActionExecutor.swift */,
+				0F9ADC090B14EA0FCBE906A4 /* DashboardView.swift */,
+				D4C6135E9F924F163F26092F /* GestureConfig.swift */,
+				103E0F07B7AFE424E435D33A /* GestureEngine.swift */,
+				F094D60EDCE51E620CDC4FC3 /* HUDOverlay.swift */,
+				0373540309C71B3EE31682A0 /* IntroView.swift */,
+				8379D3B8537030BD1092A8BE /* LaunchAtLogin.swift */,
+				67F10E50889BC973C1767DBA /* MacTapApp.swift */,
+				CD3FE7B2277487D8510597BD /* OnboardingView.swift */,
+				BEBCD77AEFBF814FB0DE855E /* PermissionsManager.swift */,
+				A5D0398E005689B3C85B4796 /* SensorManager.swift */,
+				33A8286469C2EB6A35FD909E /* SettingsView.swift */,
+				9B38BE17E971D0B81BFA2750 /* SoundManager.swift */,
+				64854320FE4FD95EBA50A2C1 /* TapDetector.swift */,
+				4BC7014E9FCB380B067AFB73 /* Theme.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		5FDBE2F0C689317C6CAFF8C7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D0B071C51D09320D71E457C3 /* MacTap.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D77AFB8424A5901297A52464 = {
+			isa = PBXGroup;
+			children = (
+				186DD1AC4C595FA3C7C7AC0C /* MacTap */,
+				5FDBE2F0C689317C6CAFF8C7 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C0BE354704D2358B1A7BF448 /* MacTap */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 835022F6E8766EEB0514AFB9 /* Build configuration list for PBXNativeTarget "MacTap" */;
+			buildPhases = (
+				7721AF16001255260BB8F772 /* Sources */,
+				D5D679A2098F5EE80AAE9DE8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MacTap;
+			packageProductDependencies = (
+			);
+			productName = MacTap;
+			productReference = D0B071C51D09320D71E457C3 /* MacTap.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		756B12AEBF650BC59C23707F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					C0BE354704D2358B1A7BF448 = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 0AD9E4E9AA8012EBA7643979 /* Build configuration list for PBXProject "MacTap" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = D77AFB8424A5901297A52464;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 5FDBE2F0C689317C6CAFF8C7 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C0BE354704D2358B1A7BF448 /* MacTap */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D5D679A2098F5EE80AAE9DE8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5026A115C1E45222FAE3E7D0 /* Assets.xcassets in Resources */,
+				D2CA50ED7165578FA1267CF6 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7721AF16001255260BB8F772 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1498EC353F0FD41E304B59D /* ActionExecutor.swift in Sources */,
+				5B817C5063B81B1469CAEAF5 /* DashboardView.swift in Sources */,
+				C4304E2E0EC061E17D17E8EB /* GestureConfig.swift in Sources */,
+				77F322658D7EDD29D51393EC /* GestureEngine.swift in Sources */,
+				4C982B5E5B7BCFEEBBEA27F0 /* HUDOverlay.swift in Sources */,
+				BB397A4A84DDD58DCC70DF04 /* IntroView.swift in Sources */,
+				030230659D9705F90C87751B /* LaunchAtLogin.swift in Sources */,
+				D6879DECC58EEDE697EA7203 /* MacTapApp.swift in Sources */,
+				25018FB20B14D83BE4BA09F7 /* OnboardingView.swift in Sources */,
+				FDA24E72ACC3BACD13F3AF26 /* PermissionsManager.swift in Sources */,
+				91D6D967FB4D7836E28284E1 /* SensorManager.swift in Sources */,
+				1B92AFDBD647C8C3A0092AD9 /* SettingsView.swift in Sources */,
+				87F4BBDE2C0BE3A211E0B5C0 /* SoundManager.swift in Sources */,
+				FC59DC9A4216776D9B8BB55D /* TapDetector.swift in Sources */,
+				DA2F645E929EEF689D5C16A5 /* Theme.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		465FAF9BDBEA166D300B304F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = MacTap/Resources/MacTap.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 4;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Jaskirat Singh. MIT License.";
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				MARKETING_VERSION = 2.1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = app.mactap.MacTap;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		5129F28E2265E2C8FECC51FB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = MacTap/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		54F8D7795564DB89F92D402E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = MacTap/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		91A4FED8F3A19907AB82B21E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = MacTap/Resources/MacTap.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 4;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Jaskirat Singh. MIT License.";
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				MARKETING_VERSION = 2.1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = app.mactap.MacTap;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0AD9E4E9AA8012EBA7643979 /* Build configuration list for PBXProject "MacTap" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				465FAF9BDBEA166D300B304F /* Debug */,
+				91A4FED8F3A19907AB82B21E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		835022F6E8766EEB0514AFB9 /* Build configuration list for PBXNativeTarget "MacTap" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5129F28E2265E2C8FECC51FB /* Debug */,
+				54F8D7795564DB89F92D402E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 756B12AEBF650BC59C23707F /* Project object */;
+}

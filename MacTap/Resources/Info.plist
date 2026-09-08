@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>MacTap</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIconName</key>
+	<string>AppIcon</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>MacTap</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.utilities</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
+	<key>LSUIElement</key>
+	<true/>
+	<key>NSAccessibilityUsageDescription</key>
+	<string>MacTap needs Accessibility access to send keyboard shortcuts and control other applications when you tap the chassis.</string>
+	<key>NSAppleEventsUsageDescription</key>
+	<string>MacTap sends AppleEvents to run AppleScripts and Shortcuts when you tap the chassis.</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>MacTap can control media playback when you tap the chassis.</string>
+	<key>NSInputMonitoringUsageDescription</key>
+	<string>MacTap needs Input Monitoring access to detect keyboard input for simulating tap gestures.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>MacTap uses the MacBook's built-in motion sensors to detect physical taps on the chassis and trigger your custom actions.</string>
+	<key>NSSystemAdministrationUsageDescription</key>
+	<string>MacTap needs permission to perform system actions like screenshots and media control when you tap the chassis.</string>
+	<key>NSUserNotificationsUsageDescription</key>
+	<string>MacTap may send notifications when gestures are detected.</string>
+</dict>
+</plist>

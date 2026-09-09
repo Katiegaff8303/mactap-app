@@ -164,7 +164,24 @@ struct GeneralSettingsView: View {
                 } trailing: {
                     Button(engine.isRunning ? "Stop" : "Start") { engine.toggle() }
                         .controlSize(.small)
+                        .disabled(!engine.sensor.isAvailable && !engine.isRunning)
                 }
+
+                #if DEBUG
+                CoastToggleRow(
+                    title: "Simulate knocks with arrow keys",
+                    icon: "arrow.left.arrow.right",
+                    isOn: Binding(
+                        get: { engine.sensor.isArrowSimulationEnabled },
+                        set: { engine.sensor.isArrowSimulationEnabled = $0 }
+                    )
+                ) { on in
+                    if engine.isRunning {
+                        engine.stop()
+                        if on { engine.start() }
+                    }
+                }
+                #endif
 
                 CoastToggleRow(title: "Enable gesture actions", icon: "bolt.fill", isOn: $configStore.config.enabled) { _ in
                     configStore.save()
@@ -273,8 +290,11 @@ struct GeneralSettingsView: View {
     }
 
     private var detectionFooter: String? {
+        if !engine.sensor.isAvailable {
+            return "This Mac’s motion sensor isn’t accessible. Detection stays off so the keyboard is untouched."
+        }
         if engine.sensor.source == .keyboardSim {
-            return "Using keyboard simulation. Press Left or Right Arrow to inject taps."
+            return "Debug only: Left/Right arrows inject fake taps. They never send shortcuts."
         }
         if engine.sensor.isStreaming {
             return "Receiving \(Int(engine.sensor.sampleRateHz)) Hz from the built-in motion sensor."
@@ -645,6 +665,15 @@ struct SensorMonitorView: View {
             }
 
             CoastCardGroup(title: "Status") {
+                if !engine.sensor.isAvailable {
+                    Text("This Mac’s motion sensor isn’t accessible. Knock detection is off.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 10)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .coastCapsule()
+                }
                 labeled("Status", engine.sensor.isStreaming ? "Streaming" : "Idle")
                 labeled("Source", engine.sensor.source.rawValue)
                 labeled("Rate", "\(Int(engine.sensor.sampleRateHz)) Hz")
@@ -769,7 +798,7 @@ struct PermissionsSettingsView: View {
             PermissionStepRow(
                 stepNumber: 2,
                 title: "Input Monitoring",
-                description: "Only needed for arrow-key simulation when the motion sensor is unavailable.",
+                description: "Optional. Lets MacTap ignore knocks while you’re typing.",
                 state: permissions.inputMonitoring,
                 isCurrentStep: permissions.currentStep == 2,
                 isRequired: false,

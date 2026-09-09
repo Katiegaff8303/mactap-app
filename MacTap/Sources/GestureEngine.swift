@@ -51,7 +51,11 @@ final class GestureEngine: ObservableObject {
 
     func start() {
         apply(ConfigStore.shared.config)
-        sensor.start()
+        guard sensor.start() else {
+            isRunning = false
+            NSLog("MacTap: engine not started — this Mac does not expose the motion sensor")
+            return
+        }
         isRunning = true
         NSLog("MacTap: engine started")
     }
@@ -96,6 +100,10 @@ final class GestureEngine: ObservableObject {
         lastActionAt = now
 
         guard let slot, slot.actionType != .none else { return }
+        if gesture.isSimulated {
+            NSLog("MacTap: simulated tap ignored by ActionExecutor")
+            return
+        }
 
         lastExecutedSlot = slot
         let frontApp = NSWorkspace.shared.frontmostApplication

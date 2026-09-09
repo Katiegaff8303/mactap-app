@@ -4,7 +4,9 @@ Knock the MacBook. The app does the rest.
 
 MacTap lives in the menu bar and turns taps on the chassis — or the desk underneath a still laptop — into shortcuts. One, two, or three knocks. Copy, paste, Accept, screenshots, media, or whatever you map.
 
-Requires a MacBook with the built-in motion sensor (Apple Silicon). macOS 14.6 or later.
+Requires a MacBook whose motion sensor is exposed as an SPU HID device: **M2 and later**, or **M1 Pro / Max / Ultra**. The original M1 Air (`MacBookAir10,1`) and some other M1 models do not publish the accelerometer HID report MacTap reads, so knocks cannot be detected. macOS 14.6 or later.
+
+MacTap does **not** fall back to rebinding arrow keys when the sensor is missing.
 
 ## Install
 

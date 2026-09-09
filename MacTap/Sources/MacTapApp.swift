@@ -26,9 +26,19 @@ struct MenuBarLabel: View {
     @ObservedObject var engine: GestureEngine
 
     var body: some View {
-        Image(systemName: engine.isRunning ? "hand.tap.fill" : "hand.tap")
+        Image(systemName: menuSymbol)
             .symbolRenderingMode(.hierarchical)
-            .accessibilityLabel(engine.isRunning ? "MacTap, detection on" : "MacTap, detection off")
+            .accessibilityLabel(menuAccessibilityLabel)
+    }
+
+    private var menuSymbol: String {
+        if !engine.sensor.isAvailable { return "exclamationmark.triangle" }
+        return engine.isRunning ? "hand.tap.fill" : "hand.tap"
+    }
+
+    private var menuAccessibilityLabel: String {
+        if !engine.sensor.isAvailable { return "MacTap, motion sensor unavailable" }
+        return engine.isRunning ? "MacTap, detection on" : "MacTap, detection off"
     }
 }
 

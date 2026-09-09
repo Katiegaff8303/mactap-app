@@ -8,6 +8,7 @@ struct DetectedGesture: Sendable, Equatable {
     let timestamp: Double
     let peakMagnitude: Double
     let peakX: Double
+    var isSimulated: Bool = false
 
     var tapWord: String {
         switch tapCount {
@@ -72,6 +73,8 @@ final class TapDetector: ObservableObject {
     private var attackPeakX: Double = 0
     private var attackAbsX: Double = 0
     private var attackSumZ: Double = 0
+    private var captureSimulated = false
+    private var groupSimulated = false
 
     private var histX: [Double] = []
     private var histT: [Double] = []
@@ -210,6 +213,7 @@ final class TapDetector: ObservableObject {
         attackPeakX = 0
         attackAbsX = 0
         attackSumZ = 0
+        captureSimulated = sample.isSimulated
         accumulateAttack(sample)
     }
 
@@ -218,6 +222,7 @@ final class TapDetector: ObservableObject {
         if sample.magnitude > capturePeakMag {
             capturePeakMag = sample.magnitude
         }
+        if sample.isSimulated { captureSimulated = true }
         accumulateAttack(sample)
     }
 
@@ -280,16 +285,19 @@ final class TapDetector: ObservableObject {
         currentTapCount += 1
         groupPeakMag = max(groupPeakMag, peak)
         groupPeakX = abs(reportX) > abs(groupPeakX) ? reportX : groupPeakX
+        groupSimulated = groupSimulated || captureSimulated
 
         if currentTapCount == 1 {
             currentSide = side
             groupDeadline = now + groupingWindow
+            groupSimulated = captureSimulated
         } else if side != currentSide && attackAbsX > 0.008 {
             emitGesture(now: now)
             currentTapCount = 1
             currentSide = side
             groupPeakMag = peak
             groupPeakX = reportX
+            groupSimulated = captureSimulated
             groupDeadline = now + groupingWindow
         }
 
@@ -332,6 +340,7 @@ final class TapDetector: ObservableObject {
         attackPeakX = 0
         attackAbsX = 0
         attackSumZ = 0
+        captureSimulated = false
     }
 
     private func emitGesture(now: Double) {
@@ -342,12 +351,14 @@ final class TapDetector: ObservableObject {
             tapCount: currentTapCount,
             timestamp: now,
             peakMagnitude: groupPeakMag,
-            peakX: groupPeakX
+            peakX: groupPeakX,
+            isSimulated: groupSimulated
         )
 
         currentTapCount = 0
         groupPeakMag = 0
         groupPeakX = 0
+        groupSimulated = false
         capturing = false
         resetCapture()
 

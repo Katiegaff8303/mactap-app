@@ -8,13 +8,5 @@
 
     <key>com.apple.security.automation.apple-events</key>
     <true/>
-
-    <!-- Disable library validation so we can load system frameworks freely -->
-    <key>com.apple.security.cs.disable-library-validation</key>
-    <true/>
-
-    <!-- Allow unsigned executable memory (needed for some CGEvent operations) -->
-    <key>com.apple.security.cs.allow-unsigned-executable-memory</key>
-    <true/>
 </dict>
 </plist>

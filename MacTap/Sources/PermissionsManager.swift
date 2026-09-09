@@ -41,7 +41,7 @@ extension Notification.Name {
 /// Required:
 ///   - Accessibility (CGEvent posting — keyboard shortcuts, media keys, lock screen)
 /// Optional:
-///   - Input Monitoring (arrow-key simulation / ignore-while-typing)
+///   - Input Monitoring (ignore-while-typing)
 ///   - AppleEvents (AppleScript actions)
 final class PermissionsManager: ObservableObject {
 

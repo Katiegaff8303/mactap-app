@@ -10,6 +10,9 @@ struct DashboardView: View {
     var body: some View {
         VStack(spacing: 10) {
             header
+            if engine.sensor.source == .unavailable && !engine.sensor.isArrowSimulationEnabled {
+                unsupportedBanner
+            }
             hero
             statusCapsules
             if !permissions.allGranted {
@@ -28,9 +31,9 @@ struct DashboardView: View {
             HStack(spacing: 8) {
                 PulseDot(isOn: engine.isRunning)
                 VStack(alignment: .leading, spacing: 1) {
-                    Text("MacTap")
+                    Text(statusTitle)
                         .font(.headline)
-                    Text(engine.isRunning ? "Listening" : "Paused")
+                    Text(statusSubtitle)
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -45,6 +48,7 @@ struct DashboardView: View {
             .toggleStyle(.switch)
             .controlSize(.mini)
             .labelsHidden()
+            .disabled(!engine.sensor.isAvailable)
             .accessibilityLabel("Detection")
         }
     }
@@ -77,6 +81,17 @@ struct DashboardView: View {
         .padding(.horizontal, 14)
         .padding(.vertical, 12)
         .coastCard(fillOnly: true)
+    }
+
+    private var unsupportedBanner: some View {
+        CoastRow(fillOnly: true) {
+            Label("This Mac’s motion sensor isn’t accessible", systemImage: "exclamationmark.triangle")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+        } trailing: {
+            EmptyView()
+        }
     }
 
     private var statusCapsules: some View {
@@ -178,7 +193,7 @@ struct DashboardView: View {
         }
         return engine.isRunning
             ? (configStore.config.layout == .knock ? "Knock the chassis or desk" : "Tap a chassis edge")
-            : "Detection is off"
+            : (engine.sensor.isAvailable ? "Detection is off" : "No motion sensor")
     }
 
     private func lastActionCaption(_ g: DetectedGesture) -> String {
@@ -198,6 +213,13 @@ struct DashboardView: View {
         }
     }
 
+    private var statusTitle: String { "MacTap" }
+
+    private var statusSubtitle: String {
+        if !engine.sensor.isAvailable { return "Unavailable" }
+        return engine.isRunning ? "Listening" : "Paused"
+    }
+
     private var sensorCaption: String {
         if engine.sensor.source == .spu {
             if engine.sensor.gyroAvailable {
@@ -205,6 +227,9 @@ struct DashboardView: View {
             }
             return engine.sensor.isStreaming ? "Built-in IMU" : "Ready"
         }
-        return "Arrow keys"
+        if engine.sensor.isArrowSimulationEnabled {
+            return "Debug arrows"
+        }
+        return "No IMU"
     }
 }

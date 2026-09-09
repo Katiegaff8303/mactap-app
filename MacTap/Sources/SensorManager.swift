@@ -16,6 +16,7 @@ struct SensorSample: Sendable {
     let gy: Double
     let gz: Double
     let gyroMagnitude: Double
+    var isSimulated: Bool = false
 }
 
 enum SensorSource: String, CaseIterable {
@@ -93,11 +94,21 @@ final class SensorManager: ObservableObject {
 
     private var lastAccelAt: Double = 0
     private var measuredHz: Double = 0
+    private var collectedSamples: Int = 0
     private var keepAliveTimer: DispatchSourceTimer?
     private var wakeObservers: [NSObjectProtocol] = []
     private let keepAliveQueue = DispatchQueue(label: "app.mactap.spu.keepalive", qos: .utility)
+    private let stateLock = NSLock()
 
-    var isAvailable: Bool { source != .unavailable }
+    #if DEBUG
+    /// Off by default. Debug-only; never starts in a Release build.
+    @Published var isArrowSimulationEnabled = false
+    #else
+    var isArrowSimulationEnabled: Bool { false }
+    #endif
+
+    var isAvailable: Bool { source == .spu || isArrowSimulationEnabled }
+    var hasChassisIMU: Bool { source == .spu }
 
     init() {
         accelReportBuffer = [UInt8](repeating: 0, count: Self.reportBufferSize)
@@ -111,11 +122,13 @@ final class SensorManager: ObservableObject {
             source = .spu
             NSLog("MacTap: SPU accelerometer found")
         } else {
-            source = .keyboardSim
-            NSLog("MacTap: SPU accelerometer not found — keyboard simulation")
+            source = .unavailable
+            NSLog("MacTap: SPU accelerometer not found — keyboard simulation disabled")
         }
     }
 
+    /// Usage 3 (accel) / 9 (gyro) with a 22-byte HID report on SPU transport.
+    /// No fallback for other report sizes — that was latching onto the wrong device.
     private func findSPUDevice(usage: UInt32) -> io_service_t? {
         let matching = IOServiceMatching("AppleSPUHIDDevice")
         var iterator: io_iterator_t = 0
@@ -123,7 +136,6 @@ final class SensorManager: ObservableObject {
         guard kr == kIOReturnSuccess else { return nil }
         defer { IOObjectRelease(iterator) }
 
-        var fallback: io_service_t = 0
         while true {
             let service = IOIteratorNext(iterator)
             if service == 0 { break }
@@ -135,19 +147,14 @@ final class SensorManager: ObservableObject {
             }
             let reportSize = getIOPropertyUInt32(service, "MaxInputReportSize") ?? 0
             let transport = getIOPropertyString(service, "Transport") ?? ""
-            let looksLikeIMU = reportSize == 0 || reportSize == Self.reportLength
             let looksLikeSPU = transport.isEmpty || transport.uppercased().contains("SPU")
-            if looksLikeIMU && looksLikeSPU {
-                if fallback != 0 { IOObjectRelease(fallback) }
-                return service
-            }
-            if fallback == 0 && looksLikeIMU {
-                fallback = service
+            guard reportSize == Self.reportLength, looksLikeSPU else {
+                IOObjectRelease(service)
                 continue
             }
-            IOObjectRelease(service)
+            return service
         }
-        return fallback == 0 ? nil : fallback
+        return nil
     }
 
     private func getIOPropertyUInt32(_ service: io_service_t, _ key: String) -> UInt32? {
@@ -221,10 +228,12 @@ final class SensorManager: ObservableObject {
         }
     }
 
-    func start(interval: TimeInterval = 1.0 / 800.0) {
-        guard !isStreaming else { return }
+    @discardableResult
+    func start(interval: TimeInterval = 1.0 / 800.0) -> Bool {
+        guard !isStreaming else { return true }
         startTime = CACurrentMediaTime()
         lastRateTick = startTime
+        collectedSamples = 0
         sampleCount = 0
         rateBucket = 0
         magRing.removeAll(keepingCapacity: true)
@@ -238,8 +247,17 @@ final class SensorManager: ObservableObject {
 
         switch source {
         case .spu:
-            startSPUStreaming()
+            guard startSPUStreaming() else {
+                source = .unavailable
+                NSLog("MacTap: motion sensor present but not openable — engine stays stopped")
+                return false
+            }
         case .keyboardSim, .unavailable:
+            guard isArrowSimulationEnabled else {
+                source = .unavailable
+                NSLog("MacTap: motion sensor unavailable — not binding arrow keys")
+                return false
+            }
             source = .keyboardSim
             startKeyboardSimulation()
         }
@@ -249,6 +267,7 @@ final class SensorManager: ObservableObject {
             startKeepAlive()
         }
         DispatchQueue.main.async { self.isStreaming = true }
+        return true
     }
 
     func stop() {
@@ -267,7 +286,7 @@ final class SensorManager: ObservableObject {
             self.isStreaming = false
             self.gyroAvailable = false
         }
-        NSLog("MacTap: sensor stopped (%d samples)", sampleCount)
+        NSLog("MacTap: sensor stopped (%d samples)", collectedSamples)
     }
 
     private func close(_ device: IOHIDDevice?) {
@@ -282,19 +301,17 @@ final class SensorManager: ObservableObject {
         if let monitor = typingMonitor { NSEvent.removeMonitor(monitor); typingMonitor = nil }
     }
 
-    private func startSPUStreaming() {
+    private func startSPUStreaming() -> Bool {
         wakeSPUDriver(full: true, log: true)
         guard let accelService = findSPUDevice(usage: Self.accelerometerUsage) else {
-            DispatchQueue.main.async { self.source = .keyboardSim }
-            startKeyboardSimulation()
-            return
+            DispatchQueue.main.async { self.source = .unavailable }
+            return false
         }
         defer { IOObjectRelease(accelService) }
 
         guard let accel = openHID(accelService) else {
-            DispatchQueue.main.async { self.source = .keyboardSim }
-            startKeyboardSimulation()
-            return
+            DispatchQueue.main.async { self.source = .unavailable }
+            return false
         }
         accelDevice = accel
 
@@ -329,6 +346,7 @@ final class SensorManager: ObservableObject {
         thread.qualityOfService = .userInteractive
         thread.start()
         runLoopThread = thread
+        return true
     }
 
     private func openHID(_ service: io_service_t) -> IOHIDDevice? {
@@ -393,9 +411,11 @@ final class SensorManager: ObservableObject {
         let rawY = Double(readInt32LE(report, offset: Self.dataOffset + 4)) / Self.imuScale
         let rawZ = Double(readInt32LE(report, offset: Self.dataOffset + 8)) / Self.imuScale
 
+        stateLock.lock()
         let gx = emaGravityX.update(rawX)
         let gy = emaGravityY.update(rawY)
         let gz = emaGravityZ.update(rawZ)
+        stateLock.unlock()
 
         let hx = rawX - gx
         let hy = rawY - gy
@@ -419,13 +439,23 @@ final class SensorManager: ObservableObject {
             gyroMagnitude: gmag
         )
         ingest(sample)
-        lastAccelAt = CACurrentMediaTime()
     }
 
     private func ingest(_ sample: SensorSample) {
         sampleStream.send(sample)
-        sampleCount += 1
+
+        var magCopy: [Double] = []
+        var xCopy: [Double] = []
+        var yCopy: [Double] = []
+        var zCopy: [Double] = []
+        var publishUI = false
+        var publishedCount = 0
+        var publishedHz: Double?
+
+        stateLock.lock()
+        collectedSamples += 1
         rateBucket += 1
+        lastAccelAt = CACurrentMediaTime()
 
         magRing.append(sample.magnitude)
         xRing.append(sample.x)
@@ -445,16 +475,26 @@ final class SensorManager: ObservableObject {
             rateBucket = 0
             lastRateTick = now
             measuredHz = hz
-            DispatchQueue.main.async { self.sampleRateHz = hz }
+            publishedHz = hz
         }
 
         if now - lastUIPublish > 0.05 {
             lastUIPublish = now
-            let magCopy = magRing
-            let xCopy = xRing
-            let yCopy = yRing
-            let zCopy = zRing
+            publishUI = true
+            publishedCount = collectedSamples
+            magCopy = magRing
+            xCopy = xRing
+            yCopy = yRing
+            zCopy = zRing
+        }
+        stateLock.unlock()
+
+        if let hz = publishedHz {
+            DispatchQueue.main.async { self.sampleRateHz = hz }
+        }
+        if publishUI {
             DispatchQueue.main.async {
+                self.sampleCount = publishedCount
                 self.lastSample = sample
                 self.currentMagnitude = sample.magnitude
                 self.waveformHistory = magCopy
@@ -495,11 +535,14 @@ final class SensorManager: ObservableObject {
         for name in names {
             let obs = nc.addObserver(forName: name, object: nil, queue: nil) { [weak self] _ in
                 self?.keepAliveQueue.async {
-                    self?.emaGravityX.reset()
-                    self?.emaGravityY.reset()
-                    self?.emaGravityZ.reset()
-                    self?.lastAccelAt = CACurrentMediaTime()
-                    self?.wakeSPUDriver(full: true, log: true)
+                    guard let self else { return }
+                    self.stateLock.lock()
+                    self.emaGravityX.reset()
+                    self.emaGravityY.reset()
+                    self.emaGravityZ.reset()
+                    self.lastAccelAt = CACurrentMediaTime()
+                    self.stateLock.unlock()
+                    self.wakeSPUDriver(full: true, log: true)
                 }
             }
             wakeObservers.append(obs)
@@ -520,8 +563,10 @@ final class SensorManager: ObservableObject {
     /// A one-shot wake at launch is not enough — the driver re-parks after idle.
     private func keepSPUAlive() {
         guard accelDevice != nil else { return }
+        stateLock.lock()
         let silence = CACurrentMediaTime() - lastAccelAt
         let hz = measuredHz
+        stateLock.unlock()
         // ~100 Hz idle on a still chassis misses 8–25 ms knocks. Treat anything
         // under native ~800 Hz as parked and run the Knock 8000→1250 wake.
         if silence > 0.25 || hz < 450 {
@@ -541,9 +586,11 @@ final class SensorManager: ObservableObject {
     private func startTypingMonitor() {
         typingMonitor = NSEvent.addGlobalMonitorForEvents(matching: [.keyDown]) { [weak self] event in
             guard let self else { return }
-            if event.keyCode != 123 && event.keyCode != 124 {
-                self.typingActivity.send(())
+            // Arrow keys are typing unless debug simulation is using them as fake knocks.
+            if self.isArrowSimulationEnabled && (event.keyCode == 123 || event.keyCode == 124) {
+                return
             }
+            self.typingActivity.send(())
         }
     }
 
@@ -585,7 +632,8 @@ final class SensorManager: ObservableObject {
                     gx: 0,
                     gy: polarity * mag * 40,
                     gz: polarity * mag * 12,
-                    gyroMagnitude: abs(polarity * mag * 42)
+                    gyroMagnitude: abs(polarity * mag * 42),
+                    isSimulated: true
                 )
                 self.ingest(sample)
             }

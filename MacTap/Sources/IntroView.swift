@@ -221,7 +221,7 @@ struct IntroRoot: View {
     }
 
     private func finish() {
-        if permissions.allGranted && !engine.isRunning {
+        if engine.sensor.isAvailable && permissions.allGranted && !engine.isRunning {
             engine.start()
         }
         onFinish()
@@ -531,6 +531,40 @@ private struct TryTapStep: View {
 
     var body: some View {
         VStack(spacing: 22) {
+            if !engine.sensor.isAvailable {
+                unsupported
+            } else {
+                listening
+            }
+        }
+        .onAppear {
+            if engine.sensor.isAvailable, !engine.isRunning { engine.start() }
+        }
+        .onChange(of: engine.flashToken) { _, _ in
+            withAnimation(.smooth) { heard = engine.lastGesture != nil }
+        }
+    }
+
+    private var unsupported: some View {
+        VStack(spacing: 22) {
+            Image(systemName: "exclamationmark.triangle")
+                .font(.system(size: 36, weight: .regular))
+                .foregroundStyle(.orange)
+            Text("This Mac can’t knock.")
+                .font(.system(size: 40, weight: .semibold))
+                .foregroundStyle(.white)
+                .multilineTextAlignment(.center)
+            Text("MacTap needs the chassis motion sensor. Original M1 Air and some other models don’t expose it. Detection stays off so arrow keys keep working.")
+                .font(.title3)
+                .multilineTextAlignment(.center)
+                .foregroundStyle(.white.opacity(0.55))
+                .frame(maxWidth: 480)
+            IntroPill(title: "Continue", action: onContinue)
+        }
+    }
+
+    private var listening: some View {
+        VStack(spacing: 22) {
             Text(heard ? "Got it." : "Knock the left edge.")
                 .font(.system(size: 44, weight: .semibold))
                 .foregroundStyle(.white)
@@ -561,12 +595,6 @@ private struct TryTapStep: View {
                     .buttonStyle(.plain)
                     .foregroundStyle(.white.opacity(0.4))
             }
-        }
-        .onAppear {
-            if !engine.isRunning { engine.start() }
-        }
-        .onChange(of: engine.flashToken) { _, _ in
-            withAnimation(.smooth) { heard = engine.lastGesture != nil }
         }
     }
 }

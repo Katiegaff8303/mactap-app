@@ -237,7 +237,7 @@ struct GeneralSettingsView: View {
             }
 
             CoastCardGroup(title: "Accuracy", footer: configStore.config.layout == .knock
-                           ? "Knock ignores left vs right. Typing is ignored so the keyboard doesn’t fire actions."
+                           ? "Knock ignores left vs right. Knocks are ignored for a moment after any key so typing does not fire actions."
                            : TapDetector.sideHeuristicDescription) {
                 if configStore.config.layout == .sides {
                 CoastToggleRow(title: "Invert left and right", icon: "arrow.left.arrow.right", isOn: $configStore.config.invertSides) { v in
@@ -798,7 +798,7 @@ struct PermissionsSettingsView: View {
             PermissionStepRow(
                 stepNumber: 2,
                 title: "Input Monitoring",
-                description: "Optional. Lets MacTap ignore knocks while you’re typing.",
+                description: "Optional. Accessibility already pauses knocks while you type; this is a fallback.",
                 state: permissions.inputMonitoring,
                 isCurrentStep: permissions.currentStep == 2,
                 isRequired: false,

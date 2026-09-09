@@ -81,7 +81,7 @@ struct OnboardingView: View {
     private var bodyCopy: String {
         [
             "MacTap uses the MacBook motion sensors. Knock the left or right edge once, twice, or three times to run a shortcut.",
-            "Accessibility is required so MacTap can send keyboard shortcuts and media keys. Input Monitoring is optional and only used to ignore knocks while you type.",
+            "Accessibility is required so MacTap can send keyboard shortcuts and media keys. Knocks are ignored while you type.",
             "Map each gesture in Gestures. Use Calibration if left and right feel swapped. Sound effects and the tap HUD are optional."
         ][min(step, 2)]
     }

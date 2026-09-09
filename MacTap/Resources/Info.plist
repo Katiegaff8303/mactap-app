@@ -35,7 +35,7 @@
 	<key>NSAppleMusicUsageDescription</key>
 	<string>MacTap can control media playback when you tap the chassis.</string>
 	<key>NSInputMonitoringUsageDescription</key>
-	<string>MacTap needs Input Monitoring access to detect keyboard input for simulating tap gestures.</string>
+	<string>MacTap can watch keyboard activity so chassis knocks are ignored while you type. Optional — Accessibility already covers this.</string>
 	<key>NSMotionUsageDescription</key>
 	<string>MacTap uses the MacBook's built-in motion sensors to detect physical taps on the chassis and trigger your custom actions.</string>
 	<key>NSSystemAdministrationUsageDescription</key>

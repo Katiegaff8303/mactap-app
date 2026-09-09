@@ -48,6 +48,6 @@ targets:
         NSAppleEventsUsageDescription: "MacTap sends AppleEvents to run AppleScripts and Shortcuts when you tap the chassis."
         NSAppleMusicUsageDescription: "MacTap can control media playback when you tap the chassis."
         NSAccessibilityUsageDescription: "MacTap needs Accessibility access to send keyboard shortcuts and control other applications when you tap the chassis."
-        NSInputMonitoringUsageDescription: "MacTap needs Input Monitoring access to detect keyboard input for simulating tap gestures."
+        NSInputMonitoringUsageDescription: "MacTap can watch keyboard activity so chassis knocks are ignored while you type. Optional — Accessibility already covers this."
         NSSystemAdministrationUsageDescription: "MacTap needs permission to perform system actions like screenshots and media control when you tap the chassis."
         NSUserNotificationsUsageDescription: "MacTap may send notifications when gestures are detected."

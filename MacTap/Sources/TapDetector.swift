@@ -1,6 +1,7 @@
 import Foundation
 import Combine
 import QuartzCore
+import CoreGraphics
 
 struct DetectedGesture: Sendable, Equatable {
     let side: TapSide
@@ -50,8 +51,10 @@ final class TapDetector: ObservableObject {
     private let minCaptureTime: Double = 0.032
     private let attackWindow: Double = 0.034
     private let attackTau: Double = 0.011
-    private let typingBurstWindow: Double = 0.42
-    private let typingLockout: Double = 0.28
+    private let typingBurstWindow: Double = 0.50
+    private let typingLockout: Double = 0.40
+    /// Pause knocks after a key press. Short enough for a follow-up knock, long enough for hunt-and-peck.
+    private let keySuppressWindow: Double = 0.45
 
     private var adaptiveNoise: Double = 0.006
     private var emaMag: Double = 0
@@ -84,6 +87,8 @@ final class TapDetector: ObservableObject {
     private var typingUntil: Double = -1
     private var lastUIPublish: Double = 0
     private var lastKeyTime: Double = -10
+    private var lastTypingCheck: Double = 0
+    private var cachedTyping = false
 
     private var tapThreshold: Double {
         let minT = 0.012
@@ -141,7 +146,7 @@ final class TapDetector: ObservableObject {
         adaptiveNoise = min(max(adaptiveNoise, 0.0035), 0.030)
 
         let threshold = max(tapThreshold * 0.88, adaptiveNoise * snrMultiplier)
-        let keyedRecently = ignoreWhileTyping && (CACurrentMediaTime() - lastKeyTime) < 0.18
+        let keyedRecently = ignoreWhileTyping && isActivelyTyping()
         let inTypingLockout = now < typingUntil || keyedRecently
         let inRefractory = (now - lastTapTime) < refractoryPeriod
         let onset = (mag > threshold || delta > threshold)
@@ -155,7 +160,11 @@ final class TapDetector: ObservableObject {
                 finalizeCapture(now: now, inTypingLockout: inTypingLockout, keyedRecently: keyedRecently)
             }
         } else if !inRefractory && onset {
-            startCapture(sample)
+            if keyedRecently {
+                publishReject("typing")
+            } else {
+                startCapture(sample)
+            }
         }
 
         if currentTapCount > 0 && now >= groupDeadline {
@@ -174,6 +183,23 @@ final class TapDetector: ObservableObject {
                 self.pendingTapCount = pending
             }
         }
+    }
+
+    /// Session/HID last-key time does not need Input Monitoring. The global
+    /// NSEvent monitor is a backup when that permission is granted.
+    private func isActivelyTyping() -> Bool {
+        let wall = CACurrentMediaTime()
+        if wall - lastKeyTime < keySuppressWindow {
+            return true
+        }
+        if wall - lastTypingCheck < 0.02 {
+            return cachedTyping
+        }
+        lastTypingCheck = wall
+        let session = CGEventSource.secondsSinceLastEventType(.combinedSessionState, eventType: .keyDown)
+        let hid = CGEventSource.secondsSinceLastEventType(.hidSystemState, eventType: .keyDown)
+        cachedTyping = min(session, hid) < keySuppressWindow
+        return cachedTyping
     }
 
     private func pushHistory(x: Double, t: Double) {
@@ -258,7 +284,7 @@ final class TapDetector: ObservableObject {
             publishReject("low SNR")
             return
         }
-        if keyedRecently && abs(meanAttackZ) > abs(meanAttackX) * 3.8 && attackAbsX < 0.006 {
+        if keyedRecently && abs(meanAttackZ) > abs(meanAttackX) * 2.2 && attackAbsX < 0.010 {
             publishReject("vertical (typing)")
             return
         }
@@ -269,7 +295,7 @@ final class TapDetector: ObservableObject {
 
         impulseTimes.append(now)
         impulseTimes = impulseTimes.filter { now - $0 < typingBurstWindow }
-        if impulseTimes.count >= 6 {
+        if impulseTimes.count >= 4 {
             typingUntil = now + typingLockout
             impulseTimes.removeAll()
             publishReject("burst lockout")

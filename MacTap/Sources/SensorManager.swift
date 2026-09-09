@@ -584,7 +584,7 @@ final class SensorManager: ObservableObject {
     }
 
     private func startTypingMonitor() {
-        typingMonitor = NSEvent.addGlobalMonitorForEvents(matching: [.keyDown]) { [weak self] event in
+        typingMonitor = NSEvent.addGlobalMonitorForEvents(matching: [.keyDown, .flagsChanged]) { [weak self] event in
             guard let self else { return }
             // Arrow keys are typing unless debug simulation is using them as fake knocks.
             if self.isArrowSimulationEnabled && (event.keyCode == 123 || event.keyCode == 124) {

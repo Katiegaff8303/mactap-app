@@ -41,17 +41,13 @@ spctl --assess --type execute --verbose /Applications/MacTap.app
 
 You want `accepted` and `source=Notarized Developer ID`. If a tool blocks the `.dmg`, install from the **zip** instead.
 
-## Screenshots
-
-<p align="center">
-  <img src="website/press/product-hunt/01-hero.png" width="720" alt="MacTap hero — knock the MacBook, the app does the rest">
-</p>
-<p align="center">
-  <img src="website/press/product-hunt/02-knocks.png" width="720" alt="One, two, or three knocks mapped to shortcuts">
-</p>
-<p align="center">
-  <img src="website/press/product-hunt/03-presets.png" width="720" alt="Daily, Coding, and other knock presets">
-</p>
+<table>
+  <tr>
+    <td align="center" width="33%"><img src="website/press/product-hunt/01-hero.png" alt="MacTap hero"></td>
+    <td align="center" width="33%"><img src="website/press/product-hunt/02-knocks.png" alt="Knock shortcuts"></td>
+    <td align="center" width="33%"><img src="website/press/product-hunt/03-presets.png" alt="Presets"></td>
+  </tr>
+</table>
 
 ## Use
 

